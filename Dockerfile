@@ -2,17 +2,19 @@ FROM ubuntu:latest As build
 
 RUN apt-get update
 
-RUN apt-get install python3 -y
-RUN apt-get install python3-pip -y
-RUN pip --version
+# Atualizar e instalar dependências necessárias
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-venv \
+    openjdk-17-jdk \
+    maven
 
+# Criar um ambiente virtual e instalar youtube_dl
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install --upgrade pip
 RUN pip install --upgrade youtube_dl
-
-RUN apt-get install openjdk-17-jdk -y
-COPY . .
-
-RUN apt-get install maven -y
-RUN mvn clean install
 
 EXPOSE 8080
 
