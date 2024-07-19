@@ -1,6 +1,5 @@
-FROM ubuntu:latest As build
-
-RUN apt-get update
+# Etapa de build
+FROM ubuntu:latest AS build
 
 # Atualizar e instalar dependências necessárias
 RUN apt-get update && apt-get install -y \
@@ -16,10 +15,18 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install --upgrade pip
 RUN pip install --upgrade youtube_dl
 
+# Copiar o código fonte e construir o projeto
+COPY . .
+RUN mvn clean install
+
+# Expor a porta da aplicação
 EXPOSE 8080
 
+# Etapa final
 FROM openjdk:17-jdk-slim
 
+# Copiar o jar da etapa de build
 COPY --from=build /target/download-content-0.0.1-SNAPSHOT.jar app.jar
 
-ENTRYPOINT [ "java", "-jar", "app.jar" ] 
+# Definir o ponto de entrada
+ENTRYPOINT ["java", "-jar", "app.jar"]
