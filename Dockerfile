@@ -2,8 +2,8 @@ FROM ubuntu:latest As build
 
 RUN apt-get update
 
-RUN apt-get install python3
-RUN apt-get install python-pip
+RUN apt-get install python3 -y
+RUN apt-get install python-pip -y
 RUN pip install youtube_dl
 
 RUN apt-get install openjdk-17-jdk -y
