@@ -4,6 +4,7 @@ RUN apt-get update
 
 RUN apt-get install python3 -y
 RUN apt-get install python3-pip -y
+COPY . .
 RUN pip install youtube_dl
 
 RUN apt-get install openjdk-17-jdk -y
